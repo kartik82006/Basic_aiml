@@ -10,11 +10,23 @@ import imageio # for saving and accessing images
 import easygui # for accessing already built GUI designs
 from PIL import ImageTk, Image  #to convert images for tkinter
 
-
+ImagePath = "cartoonify_image/person_img.jpg"
 #function to get the image path
 def upload():
     ImagePath = easygui.fileopenbox()
     cartoonify(ImagePath)
+
+def save(saving_img, ImagePath):
+    #saving an image using imwrite()
+    newName="cartoonified_Image"
+    path1 = os.path.dirname(ImagePath)
+    extension=os.path.splitext(ImagePath)[1] #to get the extension of the image
+    path = os.path.join(path1, newName+extension)
+    cv2.imwrite(path, cv2.cvtColor(saving_img, cv2.COLOR_RGB2BGR))
+     #cv2 saves images in BGR format, so we convert it to RGB
+    
+    I = "Image saved by name " + newName +" at "+ path
+    tk.messagebox.showinfo(title="Toonify", message=I)
 
 #function to cartoonify the image
 def cartoonify(ImagePath):
@@ -46,7 +58,8 @@ def cartoonify(ImagePath):
     #axes.flat is used to get a 1d array of axes from 2d
         ax.imshow(images[i], cmap='gray')
 
-    plt.show()
+    #plt.show()
+    save(cartoonImage,ImagePath)
 
-cartoonify("cartoonify_image/person_img.jpg")
+cartoonify(ImagePath)
  #to show the images
